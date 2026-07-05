@@ -1,5 +1,5 @@
 -- Initialize random seed
-math.randomseed(os.time())
+-- math.randomseed is not necessary as Minetest seeds math.random already
 
 -- Helper function to generate a random texture
 local function get_random_texture()
@@ -16,7 +16,7 @@ minetest.register_entity("nystreets:npc", {
         textures = {"character.png"},
         makes_footstep_sound = true,
         stepheight = 1.1,
-        automatic_rotate = math.pi * 0.5,
+
     },
 
     on_activate = function(self, staticdata, dtime_s)
