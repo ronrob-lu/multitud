@@ -3,7 +3,7 @@
 
 -- Helper function to generate a random texture
 local function get_random_texture()
-    return "npc_character_" .. math.random(1, 100) .. ".png"
+    return "npc_character_" .. math.random(1, 132) .. ".png"
 end
 
 minetest.register_entity("nystreets:npc", {
