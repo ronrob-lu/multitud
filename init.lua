@@ -45,6 +45,38 @@ minetest.register_entity("nystreets:npc", {
     on_step = function(self, dtime)
         self.timer = self.timer + dtime
         
+        -- Initialize damage timer if not present
+        if not self.damage_timer then
+            self.damage_timer = 0
+        end
+        self.damage_timer = self.damage_timer + dtime
+
+        -- Every 1.0 second, apply damage
+        if self.damage_timer > 1.0 then
+            self.damage_timer = 0
+
+            local pos = self.object:get_pos()
+            if pos then
+                local base_node = minetest.get_node(pos)
+                if minetest.get_item_group(base_node.name, "lava") > 0 then
+                    local hp = self.object:get_hp()
+                    self.object:set_hp(hp - 4)
+                else
+                    local head_pos = {x=pos.x, y=pos.y+1.5, z=pos.z}
+                    local head_node = minetest.get_node(head_pos)
+                    if minetest.get_item_group(head_node.name, "water") > 0 then
+                        local hp = self.object:get_hp()
+                        self.object:set_hp(hp - 1)
+                    end
+                end
+
+                if self.object:get_hp() <= 0 then
+                    self.object:remove()
+                    return
+                end
+            end
+        end
+
         -- Every 0.5 seconds, check if stuck
         if self.timer > 0.5 then
             self.timer = 0
